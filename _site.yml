@@ -1,0 +1,17 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: about.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<hq2182@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: http://github.com/ws00289583/
+    - icon: fa-linkedin fa-lg
+      href: https://www.linkedin.com/in/hanfei-qi/
+
+output:
+  html_document:
+    theme: cerulean
