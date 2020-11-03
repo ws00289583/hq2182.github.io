@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-```{r, message = FALSE}
+```{r, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(p8105.datasets)
 library(plotly)
@@ -23,29 +23,51 @@ Clean the data
 ```{r}
 data_df = instacart %>% 
   filter(aisle %in% 
-           c("fresh fruits", "ice cream ice", "bread", "soft drinks", "tea")) %>% 
-  select(aisle, product_name) %>% 
-  group_by(aisle) %>% 
-  count(product_name) %>% 
-  mutate(rank = min_rank(desc(n))) %>% 
-  filter(rank < 4) %>% 
-  arrange(desc(n))
+           c("fresh fruits", "ice cream ice", "bread", "soft drinks", "tea", "asian foods")) %>% 
+  select(aisle, product_name, days_since_prior_order)
 ```
 
 scatterplot
 ```{r}
 data_df %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(rank = min_rank(desc(n))) %>% 
+  filter(rank < 4) %>% 
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
   mutate(product_name = fct_reorder(product_name, n)) %>% 
-  plot_ly(x = ~product_name, y = ~n, type = "scatter", mode = "marker")
+  plot_ly( y = ~n, x = ~product_name, type = "scatter", mode = "marker")
 ```
 
 boxplot
 ```{r}
-
+data_df %>% 
+  filter(aisle %in% 
+           c("ice cream ice", "soft drinks", "tea", "bread", "asian foods")) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(rank = min_rank(desc(n))) %>% 
+  filter(rank < 11) %>% 
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
+  mutate(product_name = fct_reorder(product_name, n)) %>% 
+  plot_ly(
+    y = ~n, x = ~aisle, color = ~aisle,
+    type = "box", colors = "viridis")
 ```
 
 barchart
 ```{r}
+data_df %>% 
+  filter(aisle %in% 
+           c("ice cream ice", "soft drinks", "tea", "bread", "asian foods")) %>% 
+  group_by(product_name) %>% 
+  mutate(days_since_prior_order = mean(days_since_prior_order)) %>% 
+  filter(days_since_prior_order > 1 & days_since_prior_order < 3) %>% 
+  ungroup() %>% 
+  mutate(product_name = fct_reorder(product_name, days_since_prior_order)) %>% 
+  plot_ly(x = ~product_name, y = ~days_since_prior_order, color = ~product_name, type = "bar", colors = "viridis")
 
 ```
 
