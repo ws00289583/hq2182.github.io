@@ -6,14 +6,30 @@ output:
     toc_float: true
 ---
 
-# This is Hanfei's awesome website
-
 # Introduction
-## Test if it works?
+This website is created for p8105 Data Science I Homework 5.
 
-# Local image
-![](images/xxx.jpg)
+## Guidance of Website
+"Home" is the main (current) page.  
+On the upper right corner, from left to right:
 
-# Link to page within the site
+  * "[About me](about.html)" is a page giving my academic and professional experience.
+  * "[Plotly](plotly.html)" holds some graphs generated from dataset `instacart`. I would like to know the most popular items in aisles of interest. Popular means the largest numbers of products purchased, as well as the most frequently bought items.
+  * "[Dashboard](dashboard.html)" contains plots in "Plotly". Specific description of each plot are in [Plotly](plotly.html).
+  * Envelope: send me a email by clicking this.
+  * Github: click this to access my Github page.
+  * LinkedIn: click this to access my LinkedIn page.
 
-[About me](about.html)
+# Homework Prompt
+Here is the homework prompt
+
+## Problem 1
+
+* A brief introductory landing page
+* A page giving your academic and professional experience (i.e. a resume)
+* Links in the site navigation for your GitHub account, your email, and other professional networks.
+
+## Problem 2
+
+* Create a flexdashboard using plotly for that includes at least three distinct plot types (e.g. scatterplots, line plots, bar plots, box plots, etc.).
+

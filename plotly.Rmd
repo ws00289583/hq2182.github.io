@@ -13,11 +13,13 @@ library(plotly)
 data("instacart")
 ```
 
-would like to know the most popular 3 products ordered in alsles: `fresh fruits`, `ice cream ice`, `bread`, `soft drinks`, and `tea`, as well as their number of products ordered in each aisle. 
+I would like to know the most popular products ordered in aisles: `fresh fruits`, `ice cream ice`, `bread`, `soft drinks`, `tea`, and `asian foods` as well as their number of products ordered in each aisle. 
 
-pointplot:  number of items orderd vs. items
-boxplot: number of items ordered in each products in aisle vs. aisles
-barchart: number of items ordered in aisle vs. aisles
+I also want to know the most frequently purchased items in each aisles (1 < average reorder day < 3), so I can try some popular items next time.
+
+pointplot:  number of the most popular 3 items ordered vs. items' names
+boxplot: number of items ordered in the most popular 10 products in aisle vs. aisles
+barchart: days since prior order vs. items' names
 
 Clean the data
 ```{r}

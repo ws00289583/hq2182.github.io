@@ -6,4 +6,9 @@ output:
     toc_float: true
 ---
 
-# This page has information about me
+# My academic and professional experience
+## Academic
+![](image/edu.png)
+
+## Professional experience
+![](image/pro.png)
