@@ -11,7 +11,7 @@
 
 
 
-<title>About me</title>
+<title>flexdashboard</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +25,13 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -385,14 +392,41 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">About me</h1>
+<h1 class="title toc-ignore">flexdashboard</h1>
 
 </div>
 
 
-<div id="this-page-has-information-about-me" class="section level1">
-<h1>This page has information about me</h1>
-</div>
+<pre class="r"><code>library(tidyverse)
+library(p8105.datasets)
+library(plotly)</code></pre>
+<pre><code>## Warning: package &#39;plotly&#39; was built under R version 4.0.3</code></pre>
+<pre class="r"><code>data(&quot;instacart&quot;)</code></pre>
+<p>would like to know the most popular 3 products ordered in alsles: <code>fresh fruits</code>, <code>ice cream ice</code>, <code>bread</code>, <code>soft drinks</code>, and <code>tea</code>, as well as their number of products ordered in each aisle.</p>
+<p>pointplot: number of items orderd vs. items boxplot: number of items ordered in each products in aisle vs. aisles barchart: number of items ordered in aisle vs. aisles</p>
+<p>Clean the data</p>
+<pre class="r"><code>data_df = instacart %&gt;% 
+  filter(aisle %in% 
+           c(&quot;fresh fruits&quot;, &quot;ice cream ice&quot;, &quot;bread&quot;, &quot;soft drinks&quot;, &quot;tea&quot;)) %&gt;% 
+  select(aisle, product_name) %&gt;% 
+  group_by(aisle) %&gt;% 
+  count(product_name) %&gt;% 
+  mutate(rank = min_rank(desc(n))) %&gt;% 
+  filter(rank &lt; 4) %&gt;% 
+  arrange(desc(n))</code></pre>
+<p>scatterplot</p>
+<pre class="r"><code>data_df %&gt;% 
+  mutate(product_name = fct_reorder(product_name, n)) %&gt;% 
+  plot_ly(x = ~product_name, y = ~n, type = &quot;scatter&quot;, mode = &quot;marker&quot;)</code></pre>
+<pre><code>## Warning: `arrange_()` is deprecated as of dplyr 0.7.0.
+## Please use `arrange()` instead.
+## See vignette(&#39;programming&#39;) for more help
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<div id="htmlwidget-5feebb84df95d48da9e7" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5feebb84df95d48da9e7">{"x":{"visdat":{"13082eaa4a7c":["function () ","plotlyVisDat"]},"cur_data":"13082eaa4a7c","attrs":{"13082eaa4a7c":{"x":{},"y":{},"mode":"marker","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"product_name","type":"category","categoryorder":"array","categoryarray":["Sourdough Bread","Organic Bread with 21 Whole Grains","100% Whole Wheat Bread","Organic Strawberries","Bag of Organic Bananas","Banana","Chocolate Chip Cookie Dough Ice Cream","Vanilla Ice Cream","Chocolate Ice Cream","Ginger Ale","Fridge Pack Cola","Soda","Zen Tea","Premium Unsweetened Iced Tea","Pink Lady Apple Kombucha"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"n"},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["Banana","Bag of Organic Bananas","Organic Strawberries","100% Whole Wheat Bread","Soda","Organic Bread with 21 Whole Grains","Sourdough Bread","Fridge Pack Cola","Chocolate Ice Cream","Ginger Ale","Vanilla Ice Cream","Chocolate Chip Cookie Dough Ice Cream","Pink Lady Apple Kombucha","Premium Unsweetened Iced Tea","Zen Tea"],"y":[18726,15480,10894,2298,1507,938,738,645,635,634,443,418,233,216,173],"mode":"marker","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>boxplot</p>
+<p>barchart</p>
 
 
 

@@ -1,0 +1,51 @@
+---
+title: "flexdashboard"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r, message = FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+data("instacart")
+```
+
+would like to know the most popular 3 products ordered in alsles: `fresh fruits`, `ice cream ice`, `bread`, `soft drinks`, and `tea`, as well as their number of products ordered in each aisle. 
+
+pointplot:  number of items orderd vs. items
+boxplot: number of items ordered in each products in aisle vs. aisles
+barchart: number of items ordered in aisle vs. aisles
+
+Clean the data
+```{r}
+data_df = instacart %>% 
+  filter(aisle %in% 
+           c("fresh fruits", "ice cream ice", "bread", "soft drinks", "tea")) %>% 
+  select(aisle, product_name) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(rank = min_rank(desc(n))) %>% 
+  filter(rank < 4) %>% 
+  arrange(desc(n))
+```
+
+scatterplot
+```{r}
+data_df %>% 
+  mutate(product_name = fct_reorder(product_name, n)) %>% 
+  plot_ly(x = ~product_name, y = ~n, type = "scatter", mode = "marker")
+```
+
+boxplot
+```{r}
+
+```
+
+barchart
+```{r}
+
+```
+
