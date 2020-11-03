@@ -1,25 +1,20 @@
 ---
-title: "flexdashboard"
+title: "Dashboard"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
 ---
 
-```{r, message = FALSE, warning = FALSE}
+```{r setup, include=FALSE}
+library(flexdashboard)
 library(tidyverse)
 library(p8105.datasets)
 library(plotly)
 data("instacart")
 ```
 
-would like to know the most popular 3 products ordered in alsles: `fresh fruits`, `ice cream ice`, `bread`, `soft drinks`, and `tea`, as well as their number of products ordered in each aisle. 
-
-pointplot:  number of items orderd vs. items
-boxplot: number of items ordered in each products in aisle vs. aisles
-barchart: number of items ordered in aisle vs. aisles
-
-Clean the data
 ```{r}
 data_df = instacart %>% 
   filter(aisle %in% 
@@ -27,7 +22,30 @@ data_df = instacart %>%
   select(aisle, product_name, days_since_prior_order)
 ```
 
-scatterplot
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+data_df %>% 
+  filter(aisle %in% 
+           c("ice cream ice", "soft drinks", "tea", "bread", "asian foods")) %>% 
+  group_by(product_name) %>% 
+  mutate(days_since_prior_order = mean(days_since_prior_order)) %>% 
+  filter(days_since_prior_order > 1 & days_since_prior_order < 3) %>% 
+  ungroup() %>% 
+  mutate(product_name = fct_reorder(product_name, days_since_prior_order)) %>% 
+  plot_ly(x = ~product_name, y = ~days_since_prior_order, color = ~product_name, type = "bar", colors = "viridis") %>% 
+  layout(showlegend = FALSE)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
 ```{r}
 data_df %>% 
   group_by(aisle) %>% 
@@ -42,7 +60,8 @@ data_df %>%
           yaxis = list(tickfont = list(size = 8)) )
 ```
 
-boxplot
+### Chart C
+
 ```{r}
 data_df %>% 
   filter(aisle %in% 
@@ -57,20 +76,5 @@ data_df %>%
   plot_ly(
     y = ~n, x = ~aisle, color = ~aisle,
     type = "box", colors = "viridis")
-```
-
-barchart
-```{r}
-data_df %>% 
-  filter(aisle %in% 
-           c("ice cream ice", "soft drinks", "tea", "bread", "asian foods")) %>% 
-  group_by(product_name) %>% 
-  mutate(days_since_prior_order = mean(days_since_prior_order)) %>% 
-  filter(days_since_prior_order > 1 & days_since_prior_order < 3) %>% 
-  ungroup() %>% 
-  mutate(product_name = fct_reorder(product_name, days_since_prior_order)) %>% 
-  plot_ly(x = ~product_name, y = ~days_since_prior_order, color = ~product_name, type = "bar", colors = "viridis") %>% 
-  layout(showlegend = FALSE)
-
 ```
 
